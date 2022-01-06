@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: toy-gym
+Version: 2.0.0
+Summary: Set of OpenAI/gym robotic environments based on PyBullet physics engine.
+Home-page: UNKNOWN
+Author: Khanh Quynh Nguyen
+Author-email: nkquynh1998@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Provides-Extra: tests
+Provides-Extra: extra
+Provides-Extra: docs
+
+UNKNOWN
+

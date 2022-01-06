@@ -1,0 +1,163 @@
+<?xml version="1.0"?> 
+<robot name="maze_world">
+    <!-- Colors --> 
+    <material name="grey"> 
+        <color rgba="0.91 0.925 0.945 1"/>
+    </material>
+
+    <material name="black">
+        <color rgba="0.0 0.0 0.0 1"/>
+    </material>
+
+    <!-- Plane -->
+    <link name="base_link">
+        <visual> 
+            <geometry> 
+                <box size="10 10 0.01"/>
+                <origin rpy="0 0 0" xyz="-5 -5 -0.005"/>
+            </geometry>
+            <material name="grey"/>
+        </visual>
+        <collision> 
+             <geometry> 
+                <box size="10 10 0.01"/>
+                <origin rpy="0 0 0" xyz="-5 -5 -0.005"/>
+            </geometry>
+        </collision> 
+        <inertial> 
+            <mass value="0"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial> 
+        <contact> 
+            <lateral_friction value="1"/>
+        </contact>
+    </link> 
+
+    <link name="wall1">
+        <visual>
+            <geometry>
+                <box size="0.1 10 1"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0"/>
+            <material name="black">
+            </material>
+        </visual>
+        <collision>
+        <geometry>
+            <box size="0.1 10 1"/>
+        </geometry>
+        </collision>
+        <inertial> 
+            <mass value="10"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial> 
+    </link>
+    <joint name="base_to_wall1" type="fixed">
+        <parent link="base_link"/>
+        <child link="wall1"/>
+        <origin xyz="5 0.0 0.0"/>
+    </joint>
+
+    <link name="obstacle">
+        <visual>
+            <geometry>
+                <box size="0.5 0.5 1"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0"/>
+            <material name="black">
+            </material>
+        </visual>
+        <collision>
+        <geometry>
+            <box size="0.5 0.5 1"/>
+        </geometry>
+        </collision>
+        <inertial> 
+            <mass value="10"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial> 
+    </link>
+     <joint name="base_to_obstacle" type="fixed">
+        <parent link="base_link"/>
+        <child link="obstacle"/>
+        <origin xyz="-2.5 0.0 0.0" rpy="0.0 0.0 1.57075"/>
+    </joint>
+
+    <link name="wall2">
+        <visual>
+            <geometry>
+                <box size="0.1 10 1"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0"/>
+            <material name="black">
+            </material>
+        </visual>
+        <collision>
+        <geometry>
+            <box size="0.1 10 1"/>
+        </geometry>
+        </collision>
+        <inertial> 
+            <mass value="10"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial> 
+    </link>
+    <joint name="base_to_wall2" type="fixed">
+        <parent link="base_link"/>
+        <child link="wall2"/>
+        <origin xyz="-5 0.0 0.0"/>
+    </joint>    
+
+
+    <link name="wall3">
+        <visual>
+            <geometry>
+                <box size="0.1 10 1"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0"/>
+            <material name="black">
+            </material>
+        </visual>
+        <collision>
+        <geometry>
+            <box size="0.1 10 1"/>
+        </geometry>
+        </collision>
+        <inertial> 
+            <mass value="10"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial> 
+    </link>
+    <joint name="base_to_wall3" type="fixed">
+        <parent link="base_link"/>
+        <child link="wall3"/>
+        <origin xyz="0.0 -5.0 0.0" rpy="0.0 0.0 1.57075"/>
+    </joint>   
+
+
+
+    <link name="wall4">
+        <visual>
+            <geometry>
+                <box size="0.1 10 1"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0"/>
+            <material name="black">
+            </material>
+        </visual>
+        <collision>
+        <geometry>
+            <box size="0.1 10 1"/>
+        </geometry>
+        </collision>
+        <inertial> 
+            <mass value="10"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial> 
+    </link>
+    <joint name="base_to_wall4" type="fixed">
+        <parent link="base_link"/>
+        <child link="wall4"/>
+        <origin xyz="0.0 5.0 0.0" rpy="0.0 0.0 1.57075"/>
+    </joint>   
+</robot>
