@@ -265,7 +265,7 @@ class RobotTaskEnv(gym.GoalEnv):
         self.robot.set_action(action)
         self.sim.step()
         obs = self._get_obs()
-        done = False
+        done = self.task.is_success(obs["achieved_goal"], self.task.get_goal())
         info = {"is_success": self.task.is_success(obs["achieved_goal"], self.task.get_goal())}
         reward = self.task.compute_reward(obs["achieved_goal"], self.task.get_goal(), info)
         assert isinstance(reward, float)  # needed for pytype cheking

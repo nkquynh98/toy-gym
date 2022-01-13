@@ -21,17 +21,18 @@ env.task.get_movable_obstacles()
 # policy = crude_policy(env, False)
 # done = False
 
-policy = crude_policy(env, False, is_constant_vel=False)
+policy = crude_policy(env, True, is_constant_vel=False)
 done = False
 #im = env.render("rgb_array",width=480, height=480,target_position=[0,0,0], yaw=-90, pitch=-90.1, distance=9.0)
 #plt.imshow(im)
 #plt.show()
 print("Sim", env.sim._bodies_idx)
-print("Dict", env.get_workspace_objects().__dict__)
+print(env.get_workspace_objects().robot.position)
 for i in range(NUM_EPS):
     for _ in range(MAX_STEPS):
         action = policy.get_action()
         obs, reward, done, info = env.step(action)
+        print(done)
         if done:
             break
     env.reset()

@@ -45,12 +45,12 @@ class PyBullet:
         self._constraint_id = {}
     """Shape Dictionary"""
     shape_name = {
-        p.GEOM_BOX : "box",
-        p.GEOM_SPHERE: "sphere",
-        p.GEOM_CAPSULE: "capsule",
-        p.GEOM_CYLINDER: "cylinder",
-        p.GEOM_PLANE: "plane",
-        p.GEOM_MESH: "mesh"
+        p.GEOM_BOX : "Box",
+        p.GEOM_SPHERE: "Sphere",
+        p.GEOM_CAPSULE: "Capsule",
+        p.GEOM_CYLINDER: "Cylinder",
+        p.GEOM_PLANE: "Plane",
+        p.GEOM_MESH: "Mesh"
     }
     @property
     def dt(self):
@@ -152,7 +152,9 @@ class PyBullet:
         Output:
             shape_name(str): Name of the shape
             shape_dim(float array): Dim of the shape"""
+        print(self.physics_client.getVisualShapeData(self._bodies_idx[body]))
         shape_tuple = self.physics_client.getVisualShapeData(self._bodies_idx[body])[link_index+1]
+        
         shape_name = self.shape_name[shape_tuple[2]]
         shape_dim = shape_tuple[3]
         return shape_name, shape_dim
@@ -308,6 +310,11 @@ class PyBullet:
         """
         return self.physics_client.getJointState(self._bodies_idx[body], joint)[1]
 
+
+    def get_joint_info_position(self, body: str, joint: int):
+        return self.physics_client.getJointInfo(self._bodies_idx[body], joint)[14]
+    def get_joint_info_orientation(self, body: str, joint: int):
+        return self.physics_client.getJointInfo(self._bodies_idx[body], joint)[15]
     def set_base_pose(self, body: str, position: np.ndarray, orientation: np.ndarray) -> None:
         """Set the position of the body.
 

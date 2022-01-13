@@ -6,7 +6,7 @@ with open(os.path.join(os.path.dirname(__file__), "version.txt"), "r") as file_h
     __version__ = file_handler.read().strip()
 
 register(
-    id="ToyPickPlaceOneObject-v1",
-    entry_point="toy_gym.envs:ToyPickPlaceOneObject",
-    max_episode_steps=200,
+    id="ToyPickPlace2D-v1",
+    entry_point="toy_gym.envs:ToyPickPlace2D",
+    max_episode_steps=1000,
 )

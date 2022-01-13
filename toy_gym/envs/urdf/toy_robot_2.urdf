@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+
+<robot name="toy_robot">
+    <material name="black"> 
+        <color rgba="0 0 0 1"/>
+    </material>
+    <material name="blue"> 
+        <color rgba="0.6 0.7 0.8 1"/>
+    </material>
+
+    <material name="green"> 
+        <color rgba="0.0 1 0 1"/>
+    </material>
+    <!-- Base Frame of Robot --> 
+
+    <!-- For navigation -->
+    <link name="world_link"/>
+    <link name="base_link_0"/>
+    <link name="base_link_1"/>
+
+    <joint name="x" type="prismatic">
+        <limit effort="10000" lower="-5" upper="5" velocity="10.0"/>
+        <parent link="world_link"/>
+        <child link="base_link_0"/>
+        <axis xyz="1 0 0"/>
+    </joint>
+    <joint name="y" type="prismatic">
+        <limit effort="10000" lower="-5" upper="5" velocity="10.0"/>
+        <parent link="base_link_0"/>
+        <child link="base_link_1"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+    <joint name="theta" type="continuous">
+        <limit effort="10000" lower="-5" upper="5" velocity="1.5708"/>
+        <parent link="base_link_1"/>
+        <child link="base_link"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <!-- Robot description-->
+    <link name="base_link">
+    </link>
+
+    <joint name = "base_link_to_body" type="fixed">
+        <parent link="base_link"/>
+        <child link="body"/>
+        <origin xyz="0.0 0.0 0.2"/>
+    </joint>
+    <link name="body">
+        <visual> 
+            <geometry> 
+                <cylinder radius="0.1" length="0.4"/> 
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <inertial>
+            <mass value="1"/>
+            <inertia ixx="0.035833" ixy="0.0" ixz="0.0" iyy="0.035833" iyz="0.0" izz="0.045"/>
+            <origin xyz="0 0 0.2" rpy="0 0 0"/>
+        </inertial>
+        <collision> 
+             <geometry> 
+                <cylinder radius="0.1" length="0.4"/>
+            </geometry>
+            <origin rpy="0 0 0"/>
+        </collision>  
+    </link> 
+
+    <link name="gripper">
+    <visual>
+        <geometry>
+            <cylinder radius="0.01" length="0.01"/>
+        </geometry>
+        <material name="green">
+        </material>
+    </visual>
+    </link>
+
+    <joint name="base_to_gripper" type="fixed">
+        <parent link="body"/>
+        <child link="gripper"/> 
+        <origin xyz="0.4 0 0"/>
+    </joint>    
+    <link name="left_hand">
+        <visual> 
+            <geometry> 
+                <box size="0.4 0.05 0.4"/> 
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link> 
+    <joint name="gripper_to_left_hand" type="prismatic">
+        <parent link="gripper"/>
+        <child link="left_hand"/> 
+        <limit effort="10" lower="-0.3" upper="0.3" velocity="1"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <origin xyz="0 0.3 0"/>
+    </joint>
+
+
+    <link name="right_hand">
+        <visual> 
+            <geometry> 
+                <box size="0.4 0.05 0.4"/> 
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link> 
+    <joint name="gripper_to_right_hand" type="prismatic">
+        <parent link="gripper"/>
+        <child link="right_hand"/> 
+        <limit effort="10.0" lower="-0.3" upper="0.3" velocity="1"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <origin xyz="0 -0.3 0"/>
+    </joint>
+
+    
+
+</robot>

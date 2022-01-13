@@ -4,4 +4,4 @@
 # from toy_gym.envs.panda_tasks.panda_slide import PandaSlideEnv
 # from toy_gym.envs.panda_tasks.panda_stack import PandaStackEnv
 # from toy_gym.envs.panda_tasks.panda_flip import PandaFlipEnv
-from toy_gym.envs.toy_tasks.toy_pickplace_oneobject import ToyPickPlaceOneObject
+#from toy_gym.envs.toy_tasks.toy_pickplace_oneobject import ToyPickPlaceOneObject
