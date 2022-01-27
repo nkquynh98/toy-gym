@@ -48,6 +48,7 @@ class Toy(PyBulletRobot):
         #Send the control command to the robot
         self.send_velocity_control(linearVel=linVel,angularVel=angVel)
         self.control_gripper(action_gripper)
+        #self.sim.set_joint_angles(self.body_name,self.movement_ids, [0.0,0.0,0.0])
         #print(action_gripper)
         return None
 

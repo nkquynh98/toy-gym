@@ -110,7 +110,7 @@
     <link name="obstacle2">
         <visual>
             <geometry>
-                <box size="0.2 2 1"/>
+                <box size="0.6 4 1"/>
             </geometry>
             <origin xyz="0.0 0.0 0.0"/>
             <material name="black">
@@ -118,7 +118,7 @@
         </visual>
         <collision>
         <geometry>
-            <box size="0.2 2 1"/>
+            <box size="0.6 4 1"/>
         </geometry>
         </collision>
         <inertial> 
@@ -129,14 +129,14 @@
      <joint name="base_to_obstacle2" type="fixed">
         <parent link="base_link"/>
         <child link="obstacle2"/>
-        <origin xyz="0.0 -4 0.0" rpy="0.0 0.0 0.0"/>
+        <origin xyz="0 -3 0.0" rpy="0.0 0.0 0.0"/>
     </joint>    
 
 
     <link name="obstacle3">
         <visual>
             <geometry>
-                <box size="3 0.2 1"/>
+                <box size="2 0.6 1"/>
             </geometry>
             <origin xyz="0.0 0.0 0.0"/>
             <material name="black">
@@ -144,7 +144,7 @@
         </visual>
         <collision>
         <geometry>
-            <box size="3 0.2 1"/>
+            <box size="2 0.6 1"/>
         </geometry>
         </collision>
         <inertial> 
@@ -155,7 +155,7 @@
      <joint name="base_to_obstacle3" type="fixed">
         <parent link="base_link"/>
         <child link="obstacle3"/>
-        <origin xyz="3 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <origin xyz="4 -1 0.0" rpy="0.0 0.0 0.0"/>
     </joint>    
     <link name="wall3">
         <visual>
