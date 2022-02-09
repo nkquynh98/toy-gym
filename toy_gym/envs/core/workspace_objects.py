@@ -145,7 +145,24 @@ class Workspace_objects(object):
     @targets.setter
     def targets(self, targets: List[Targets]):
         self._targets = targets.copy()
+    #Convert from python object to a readable and jsonify-able dictionary
+    def class_to_dict(self, input_dict: dict):
+        return_dict = {}
+        for key,value in input_dict.items():
+            if isinstance(value, dict):
+                return_dict[key]=self.class_to_dict(value)
+            else:
+                assert isinstance(value, object)
+                return_dict[key] = {}
+                for child_key, child_value in value.__dict__.items():
+                    if isinstance(child_value, np.ndarray):
+                        return_dict[key][child_key] = child_value.tolist()
+                    else:
+                        return_dict[key][child_key] = child_value   
+                #return_dict[key] = value.__dict__
+                    
+        return return_dict
 
-    
-
+    def get_dict(self):
+        return self.class_to_dict(self.__dict__)
     

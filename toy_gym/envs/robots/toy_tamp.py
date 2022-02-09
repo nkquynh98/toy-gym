@@ -9,7 +9,7 @@ WORKSPACE_DIR = os.path.dirname(os.path.realpath(__file__))+"/../../../"
 
 import pybullet as p
 
-class Toy(PyBulletRobot):
+class Toy_TAMP(PyBulletRobot):
     def __init__(self, 
         sim: PyBullet, 
         base_position: np.ndarray = np.array([0.0, 0.0, 0.0]),
@@ -74,6 +74,15 @@ class Toy(PyBulletRobot):
         self.robot_ws.position = robot_position
         self.robot_ws.yaw = robot_yaw
         return self.robot_ws
+
+    def get_logic_state(self):
+        pred = [["agent-free"]]
+        if len(self.grasped_object)>0:
+            pred = []
+            for object in self.grasped_object:
+                child_pred = ["agent-carry", object]
+                pred.append(child_pred)
+        return pred
     def send_velocity_control(self, linearVel, angularVel):
         "Send Velocity to control the robot: Linear Velocity (x,y) and yaw angular velocity (theta)"
         self.sim.set_base_velocity(self.body_name, linearVel, angularVel)

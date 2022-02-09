@@ -1,0 +1,22 @@
+{"_map": 
+    {"_map_name": "maze_world", "_map_dim": [10.0, 10.0]}, 
+    "_robot": {"_robot_name": "Toy", "_robot_shape": "Cylinder", "_robot_dim": [0.4, 0.15000000000000002], "_position": [0.0, 0.0], "_yaw": 0.0, "_gripper_pose": [0.4, 0.0]}, 
+    "_fixed_obstacles": 
+        {"wall1": {"_name": "wall1", "_shape": "Box", "_dimension": [0.1, 10.0], "_position": [5.0, 0.0], "_is_fixed": true}, 
+        "wall2": {"_name": "wall2", "_shape": "Box", "_dimension": [0.1, 10.0], "_position": [-5.0, 0.0], "_is_fixed": true}, 
+        "wall3": {"_name": "wall3", "_shape": "Box", "_dimension": [10.0, 0.1], "_position": [0.0, -5.0], "_is_fixed": true}, 
+        "wall4": {"_name": "wall4", "_shape": "Box", "_dimension": [10.0, 0.1], "_position": [0.0, 5.0], "_is_fixed": true}}, 
+            
+    "_movable_obstacles": 
+    {"object_0": {"_name": "object_0", "_shape": "Cylinder", "_dimension": [0.4, 0.1], "_position": [-1.8824376388973487, -2.7703716026661525], "_is_fixed": false}, 
+    "object_1": {"_name": "object_1", "_shape": "Cylinder", "_dimension": [0.4, 0.1], "_position": [-3.2005394402564615, -2.81261072421193], "_is_fixed": false}, 
+    "object_2": {"_name": "object_2", "_shape": "Cylinder", "_dimension": [0.4, 0.1], "_position": [-4.158352217413058, -2.6106138933321614], "_is_fixed": false}, 
+    "object_3": {"_name": "object_3", "_shape": "Cylinder", "_dimension": [0.4, 0.1], "_position": [1.592727084204264, -2.4218834730055723], "_is_fixed": false}, 
+    "object_4": {"_name": "object_4", "_shape": "Cylinder", "_dimension": [0.4, 0.1], "_position": [4.153009708205768, 1.1222218276320362], "_is_fixed": false}}, 
+    
+    "_targets": 
+    {"target_0": {"_goal_radius": 0.2, "_name": "target_0", "_shape": "Box", "_dimension": [0.2, 0.2, 0.2], "_position": [-3, 4.0], "_is_fixed": true}, 
+    "target_1": {"_goal_radius": 0.2, "_name": "target_1", "_shape": "Box", "_dimension": [0.2, 0.2, 0.2], "_position": [-1.0, 4.0], "_is_fixed": true}, 
+    "target_2": {"_goal_radius": 0.2, "_name": "target_2", "_shape": "Box", "_dimension": [0.2, 0.2, 0.2], "_position": [0.0, 4.0], "_is_fixed": true}, 
+    "target_3": {"_goal_radius": 0.2, "_name": "target_3", "_shape": "Box", "_dimension": [0.2, 0.2, 0.2], "_position": [1.0, 4.0], "_is_fixed": true}, 
+    "target_4": {"_goal_radius": 0.2, "_name": "target_4", "_shape": "Box", "_dimension": [0.2, 0.2, 0.2], "_position": [2.5, 4.0], "_is_fixed": true}}}

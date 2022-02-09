@@ -152,7 +152,7 @@ class PyBullet:
         Output:
             shape_name(str): Name of the shape
             shape_dim(float array): Dim of the shape"""
-        print(self.physics_client.getVisualShapeData(self._bodies_idx[body]))
+        #print(self.physics_client.getVisualShapeData(self._bodies_idx[body]))
         shape_tuple = self.physics_client.getVisualShapeData(self._bodies_idx[body])[link_index+1]
         
         shape_name = self.shape_name[shape_tuple[2]]

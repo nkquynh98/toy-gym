@@ -9,7 +9,8 @@ class ToyPickPlaceFiveObject(ToyPickPlace2D):
                     target_positions = [[2.0,4.0], [-2.5, 4.0], [-1.0, 4.0], [0.0, 4.0], [1.0, 4.0]],
                     is_target_random = False,
                     is_object_random = False,
-                    map_name="maze_world") -> None:
+                    map_name="maze_world",
+                    verbose = False) -> None:
         super().__init__(render=render, is_target_random=is_target_random, is_object_random = is_object_random, no_of_random_object=5,
-                    object_positions=object_positions, target_positions=target_positions, map_name=map_name, verbose=True)
+                    object_positions=object_positions, target_positions=target_positions, map_name=map_name, verbose=verbose)
         

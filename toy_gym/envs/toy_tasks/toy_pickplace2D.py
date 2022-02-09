@@ -22,7 +22,7 @@ class ToyPickPlace2D(RobotTaskEnv):
         self.map_size= map_size
         self.verbose = verbose
         sim = PyBullet(render=render,background_color=np.array([0,0,230]))
-        robot = Toy(sim)
+        robot = Toy(sim, verbose=verbose)
         
         if is_target_random or is_object_random:
             self.sample_random_object()
