@@ -3,7 +3,7 @@ import time
 import warnings
 from contextlib import contextmanager
 from typing import Any, Dict, Iterator, Optional
-
+import math
 import numpy as np
 import pybullet as p
 import pybullet_data
@@ -413,6 +413,45 @@ class PyBullet:
             cameraTargetPosition=target_position,
         )
 
+    def get_lidar_result2D(self, body:str, numRays: int, height=0.2, rayMin=0.16, rayLen = 13):
+
+        """Get 2D Lidar scan result:
+            Input: 
+                body: The body that Lidar is attached to
+                numRays: number of Rays
+                rayMin: The minimum scan distance
+                rayLen: The maximum scan distance
+                height: The height of the Lidar
+                
+            Output:
+                np.array of length 2*numRays
+        """
+        rayFrom = []
+        rayTo = []
+        lidar_pose = self.get_base_position(body)
+        #print(lidar_pose)
+        result = np.zeros((2*numRays))
+        #print("Current body id", self._bodies_idx[body])
+        
+        for i in range(numRays):
+
+            rayFrom.append([
+                lidar_pose[0]+rayMin * math.sin(2. * math.pi * float(i) / numRays),
+                lidar_pose[0]+rayMin * math.cos(2. * math.pi * float(i) / numRays), height
+            ])
+            rayTo.append([
+                rayLen * math.sin(2. * math.pi * float(i) / numRays),
+                rayLen * math.cos(2. * math.pi * float(i) / numRays), height
+            ])
+
+        scan_results =  self.physics_client.rayTestBatch(rayFrom, rayTo)
+        for i in range(numRays):
+            hitObjectUid = scan_results[i][0]
+            if hitObjectUid>=0:
+                hitObjet = list(self._bodies_idx.keys())[list(self._bodies_idx.values()).index(hitObjectUid)]
+                result[i*2]= round(scan_results[i][3][0],3)
+                result[i*2+1]= round(scan_results[i][3][1],3)
+        return result
     @contextmanager
     def no_rendering(self) -> Iterator[None]:
         """Disable rendering within this context."""

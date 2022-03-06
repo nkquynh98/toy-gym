@@ -80,7 +80,7 @@ class PickAndPlace2D(Task):
         return self.compute_reward(achieved_goal=self.get_achieved_goal(), desired_goal=self.get_goal())
     def get_achieved_goal(self) -> np.ndarray:
         observation = np.array([])
-        for i in self.number_of_objects:
+        for i in np.arange(self.number_of_objects):
             observation=np.append(observation, self.sim.get_base_position("object_{}".format(i))[0:2])
         return observation
     def get_obs(self) -> np.ndarray:

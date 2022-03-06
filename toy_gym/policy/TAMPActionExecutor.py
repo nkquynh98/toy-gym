@@ -60,7 +60,8 @@ class TAMPActionExecutor:
         self.current_action = self.action_list[self.current_action_index]
         self.current_waypoint = self.current_action.trajectory.configuration(self.current_waypoint_index)
         #print("Current waypoint", self.current_waypoint)
-    def get_action(self):
+    def get_action(self, show_action_name = False):
+        
         if self.action_list is None:
             raise RuntimeError("Action list is not set")
         self.update_robot_obs()
@@ -73,8 +74,8 @@ class TAMPActionExecutor:
             action[0:3] = self.move_to_way_point(self.current_waypoint)[0:3]
         else:
             if self.current_waypoint_index == self.current_action.trajectory._T:
-                print("Current action traj", self.current_action.trajectory)
-                print("Goal Waypoint", self.current_waypoint)
+                #print("Current action traj", self.current_action.trajectory)
+                #print("Goal Waypoint", self.current_waypoint)
                 if self.current_action.name == "movetopick":
                     action[3]=1
                 elif self.current_action.name == "movetoplace":
@@ -90,8 +91,12 @@ class TAMPActionExecutor:
             else:
                 self.current_waypoint_index+=1
                 self.update_waypoint_and_action()
-        
+        if show_action_name:
+            print("[Planning] {}: {}".format(self.current_action.name, self.current_action.parameters))
         return action
+
+    def get_current_action(self):
+        return self.current_action
     
 
         
@@ -105,14 +110,14 @@ class TAMPActionExecutorFreeFlyer(TAMPActionExecutor):
         linear_diff = waypoint_xy - robot_pos
         action = np.zeros(4)
         angle_diff = waypoint_yaw - robot_yaw
-        print("angle diff", angle_diff)
+        #print("angle diff", angle_diff)
         if np.linalg.norm(linear_diff)>self.threshold:
             if abs(angle_diff)<self.threshold_angle:
                 pass
         action[0:2]=np.sign(linear_diff)*self.angular_vel if self.is_constant_vel else linear_diff*self.Kp               
         action[2]= np.sign(angle_diff)*self.angular_vel if self.is_constant_vel else angle_diff*self.Kp
-        action = np.zeros(4)
-        self.env.sim.set_base_pose(self.robot.body_name,np.array([waypoint_xy[0],waypoint_xy[1], 0]),np.array([0,0,waypoint_yaw]))
+        #action = np.zeros(4)
+        #self.env.sim.set_base_pose(self.robot.body_name,np.array([waypoint_xy[0],waypoint_xy[1], 0]),np.array([0,0,waypoint_yaw]))
         return action
 
     def check_reach_waypoint(self, waypoint):
@@ -126,3 +131,40 @@ class TAMPActionExecutorFreeFlyer(TAMPActionExecutor):
             return True
         else:
             return False
+
+
+class GILActionExecutor(TAMPActionExecutorFreeFlyer):
+    def get_action(self):
+        reached_target = False
+        if self.action_list is None:
+            raise RuntimeError("Action list is not set")
+        self.update_robot_obs()
+        action = np.zeros(4)
+        if self.current_action.name=="movetoplace":
+            action[3] = 1
+        #Check if it has reached the waypoint
+        if not self.check_reach_waypoint(self.current_waypoint):
+            #If not 
+            action[0:3] = self.move_to_way_point(self.current_waypoint)[0:3]
+        else:
+            if self.current_waypoint_index == self.current_action.trajectory._T:
+                #print("Current action traj", self.current_action.trajectory)
+                #print("Goal Waypoint", self.current_waypoint)
+                if self.current_action.name == "movetopick":
+                    action[3]=1
+                elif self.current_action.name == "movetoplace":
+                    action[3]=0
+                reached_target = True
+                #Check the final action has executed                
+                if self.current_action_index == len(self.action_list)-1:
+                    pass
+                else:
+                    self.current_action_index += 1
+                    self.current_waypoint_index = 0
+                    self.update_waypoint_and_action()
+
+            else:
+                self.current_waypoint_index+=1
+                self.update_waypoint_and_action()
+        
+        return action, reached_target       

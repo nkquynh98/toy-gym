@@ -6,17 +6,19 @@ import numpy as np
 from toy_gym.envs.EnvTemplate import Task
 from toy_gym.pybullet_gym import PyBullet
 from toy_gym.utils import distance
+from toy_gym.envs.robots.toy_tamp import Toy_TAMP
 from toy_gym.envs.core.workspace_objects import Obstacle, Targets
 import os
 WORKSPACE_DIR = os.path.dirname(os.path.realpath(__file__))+"/../../../"
 
 class PickAndPlace2D_TAMP(Task):
-    def __init__(self, sim: PyBullet, json_data = None, goal = None, goal_threshold = 0.2, ghost_mode = True, verbose = False) -> None:
+    def __init__(self, sim: PyBullet, robot:Toy_TAMP = None, json_data = None, goal = None, goal_threshold = 0.2, ghost_mode = True, verbose = False, enable_physic=True) -> None:
         super().__init__(sim)
         self.object_ids = {}
         self.target_ids = {}
         self.object_size = [0.1, 0.4]
         self.target_box_size = 0.2
+        self.robot = robot
         self.color_list = [[235.0,0.0,0.0],[77.0,48.0,194.0], [255.0,98.0,0.0], [0.0,205.0,0.0], [255.0,98.0,215.0]]
         self.object_color = {}
         self.goal_threshold = goal_threshold
@@ -26,7 +28,7 @@ class PickAndPlace2D_TAMP(Task):
         #self.ghosted_object = {}
         self.ghost_mode = ghost_mode #Ghost the object after the object has reached the target
         self.verbose = verbose
-        
+        self.enable_physic = enable_physic
         if json_data is not None:
             self.map_name=json_data["_map"]["_map_name"]
             self.object_list = json_data["_movable_obstacles"]
@@ -109,12 +111,26 @@ class PickAndPlace2D_TAMP(Task):
             observation=np.append(observation, self.sim.get_base_position(object)[0:2])
         return observation
     def get_obs(self) -> np.ndarray:
-        "Return the observation of the current position of the objects [object1_x, object1_y, object2_x, ...]"
+        "Return the observation of the current displacement of the robot_gripper to each object and from each object to its target"
+        "Return [gripper_to_object_0_x,gripper_to_object_0_y, ..., object_0_to_target_x, object_0_to_target_y"
         observation = np.array([])
         "Get the observation of the object"
+        gripper_position = self.sim.get_link_position(self.robot.body_name, self.robot.robot_links['gripper'])[0:2]
+        # for object in self.object_list:
+        #     observation=np.append(observation, self.sim.get_base_position(object)[0:2])
+        # for i in range(len(self.target_list.keys())):
+        #     observation=np.append(observation, self.sim.get_base_position("target_{}".format(i))[0:2])
         for object in self.object_list:
-            observation=np.append(observation, self.sim.get_base_position(object)[0:2])
+            observation=np.append(observation, gripper_position-self.sim.get_base_position(object)[0:2])
+        for object in self.object_list:
+            target = self.goal[object]
+            observation=np.append(observation, self.sim.get_base_position(object)[0:2]-self.sim.get_base_position(target)[0:2])
+        #for target in self.target_list:
+        #    observation=np.append(observation, self.sim.get_base_position(target)[0:2])
+        
         return observation
+
+    
     def get_goal(self):
         "Return the position of the objects target [target_for_object0_x, target_for_object0_y, target_for_object1_x, ...]"
         target_observation = np.array([])

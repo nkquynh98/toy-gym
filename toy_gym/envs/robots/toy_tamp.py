@@ -14,7 +14,8 @@ class Toy_TAMP(PyBulletRobot):
         sim: PyBullet, 
         base_position: np.ndarray = np.array([0.0, 0.0, 0.0]),
         base_rotation: np.ndarray = np.array([0,0,0]),
-        verbose=False):
+        verbose=False,
+        enable_physic = True):
         #action_space = spaces.Tuple((spaces.Box(-0.5,0.5,(3,),dtype=np.float32),spaces.Discrete(2,)))
         action_space = spaces.Box(np.array([-0.5,-0.5,-1.0, 0.0]),np.array([0.5,0.5,1.0, 1.0]),dtype=np.float32)
         #print("Action sampled: ",action_space.sample()[0])
@@ -41,6 +42,7 @@ class Toy_TAMP(PyBulletRobot):
         self.grasped_object = []
         self.robot_ws = None       
         self.verbose = verbose
+        self.enable_physic = enable_physic
         if self.verbose:
             print(self.robot_joints)
             print(self.robot_links)
@@ -48,10 +50,19 @@ class Toy_TAMP(PyBulletRobot):
     def set_action(self, action: np.ndarray):
         action_x_vel, action_y_vel, action_theta_vel = action[0:3].copy() #x_vel, y_vel, theta_vel
         action_gripper = action[3] # 1 for holding command, 0 for releasing
-        linVel = np.array([action_x_vel, action_y_vel, 0])
-        angVel = np.array([0, 0, action_theta_vel])
-        #Send the control command to the robot
-        self.send_velocity_control(linearVel=linVel,angularVel=angVel)
+
+        if self.enable_physic:
+            linVel = np.array([action_x_vel, action_y_vel, 0])
+            angVel = np.array([0, 0, action_theta_vel])
+            #Send the control command to the robot            
+            self.send_velocity_control(linearVel=linVel,angularVel=angVel)
+        else:
+            robot_position = self.sim.get_base_position(self.body_name)[0:2]
+            robot_position_x = robot_position[0]+action_x_vel
+            robot_position_y = robot_position[1]+action_y_vel
+            robot_yaw = self.sim.get_base_rotation(self.body_name, "euler")[2]+action_theta_vel
+            #print("robot yaw", robot_yaw)
+            self.sim.set_base_pose(self.body_name,np.array([robot_position_x,robot_position_y, 0]),np.array([0,0,robot_yaw]))
         self.control_gripper(action_gripper)
         #self.sim.set_joint_angles(self.body_name,self.movement_ids, [0.0,0.0,0.0])
         #print(action_gripper)
@@ -135,6 +146,9 @@ class Toy_TAMP(PyBulletRobot):
         robot_position = self.sim.get_base_position(self.body_name)[0:2]
         robot_yaw = self.sim.get_base_rotation(self.body_name, "euler")[2]
         gripper_position = self.sim.get_link_position(self.body_name, self.robot_links['gripper'])[0:2]
+        ray = self.sim.get_lidar_result2D(self.body_name, 37)
+        #print("Ray result", ray)
+        #obs = np.concatenate((robot_position,[robot_yaw],[self.is_holding],gripper_position, ray))
         obs = np.concatenate((robot_position,[robot_yaw],[self.is_holding],gripper_position))
         return obs
 
